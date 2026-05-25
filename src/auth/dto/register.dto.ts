@@ -1,6 +1,5 @@
 import {
   IsEmail,
-  IsOptional,
   IsString,
   MinLength,
   MaxLength,
@@ -19,13 +18,11 @@ export class RegisterDto {
   @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
   passwordHash: string;
 
-  @IsOptional()
   @IsString({ message: 'El teléfono debe ser texto' })
   @MinLength(7, { message: 'El teléfono debe tener al menos 7 caracteres' })
-  telefono?: string;
+  telefono: string;
 
-  @IsOptional()
   @IsString({ message: 'La dirección debe ser texto' })
   @MaxLength(200, { message: 'La dirección no puede exceder 200 caracteres' })
-  direccion?: string;
+  direccion: string;
 }

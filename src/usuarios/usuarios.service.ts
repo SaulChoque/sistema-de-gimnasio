@@ -21,8 +21,8 @@ export class UsuariosService {
       data: {
         nombre: createUsuarioDto.nombre,
         correo: createUsuarioDto.correo,
-        telefono: createUsuarioDto.telefono || '',
-        direccion: createUsuarioDto.direccion || '',
+        telefono: createUsuarioDto.telefono,
+        direccion: createUsuarioDto.direccion,
         passwordHash: '', // Will be set by auth service
       },
     });

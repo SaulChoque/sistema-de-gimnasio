@@ -18,7 +18,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Juan\",\n  \"correo\": \"juan@example.com\",\n  \"passwordHash\": \"secret123\"\n}"
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"correo\": \"juan@example.com\",\n  \"passwordHash\": \"secret123\",\n  \"telefono\": \"77777777\",\n  \"direccion\": \"Calle 1\"\n}"
             },
             "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth","register"] }
           }
@@ -76,7 +76,7 @@
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Maria\",\n  \"correo\": \"maria@example.com\"\n}" },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Maria\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"77777777\",\n  \"direccion\": \"Calle 1\"\n}" },
             "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] }
           }
         },

@@ -56,6 +56,8 @@ describe('AuthService', () => {
         nombre: 'John Doe',
         correo: 'john@example.com',
         passwordHash: 'password123',
+        telefono: '77777777',
+        direccion: 'Calle 1',
       };
 
       mockPrismaService.usuario.findUnique.mockResolvedValue({

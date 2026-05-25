@@ -79,6 +79,8 @@ describe('UsuariosService', () => {
       const createUsuarioDto = {
         nombre: 'John Doe',
         correo: 'john@example.com',
+        telefono: '77777777',
+        direccion: 'Calle 1',
       };
 
       const usuario = {

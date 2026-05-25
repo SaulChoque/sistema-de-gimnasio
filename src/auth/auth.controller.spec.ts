@@ -39,6 +39,8 @@ describe('AuthController', () => {
         nombre: 'John Doe',
         correo: 'john@example.com',
         passwordHash: 'password123',
+        telefono: '77777777',
+        direccion: 'Calle 1',
       };
 
       const mockResponse = {

@@ -8,7 +8,14 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiBody, ApiBearerAuth, ApiTags, ApiParam } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiBearerAuth,
+  ApiTags,
+  ApiParam,
+} from '@nestjs/swagger';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto, UpdateUsuarioDto } from './dto';
 import { JwtAuthGuard } from '../auth/guards';

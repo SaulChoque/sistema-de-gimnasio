@@ -4,19 +4,9 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto, RegisterDto, AuthResponseDto } from './dto';
-let bcrypt: any;
-
-try {
-  bcrypt = require('bcrypt');
-} catch (e) {
-  // bcrypt is not available in test environment
-  bcrypt = {
-    hash: async (s: string) => s,
-    compare: async () => true,
-  };
-}
 @Injectable()
 export class AuthService {
   constructor(
@@ -45,8 +35,8 @@ export class AuthService {
         nombre,
         correo,
         passwordHash: hashedPassword,
-        telefono: telefono || '',
-        direccion: direccion || '',
+        telefono: telefono,
+        direccion: direccion,
       },
     });
 
