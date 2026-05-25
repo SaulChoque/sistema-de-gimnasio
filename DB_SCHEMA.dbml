@@ -1,0 +1,85 @@
+// ==========================================
+// MÓDULO: GESTIÓN DE USUARIOS Y CLASES
+// ==========================================
+
+Table USUARIO {
+  idUsuario int [pk]
+  Nombre varchar
+  Telefono varchar 
+  Correo varchar
+  Direccion varchar
+}
+
+// ------ HERENCIA DE USUARIOS ------
+
+Table CLIENTE {
+  idcliente int [pk]
+  idUsuario int
+}
+
+Table EMPLEADO {
+  idempleado int [pk]
+  idUsuario int
+  salario float
+  fecha_contrato date
+}
+
+Table ADMINISTRADOR {
+  idadministrador int [pk]
+  idUsuario int
+  Cargo varchar
+}
+
+// ------ HERENCIA DE EMPLEADOS ------
+
+Table RECEPCIONISTA {
+  idrecepcionista int [pk]
+  idempleado int
+}
+
+Table INSTRUCTOR {
+  idinstructor int [pk]
+  idempleado int
+  Especialidad varchar
+}
+
+Table ADM_LIMPIEZA {
+  idlimpieza int [pk]
+  idempleado int
+}
+
+// ------ TABLAS DE CLASES Y ASISTENCIA ------
+
+Table CLASES {
+  idclases int [pk]
+  idinstructor int
+  Nombre varchar
+  Horario varchar
+}
+
+Table ASISTE {
+  idcliente int [pk]
+  idclases int [pk]
+  Fecha date
+}
+
+// ==========================================
+// RELACIONES (FOREIGN KEYS)
+// ==========================================
+
+// Relaciones de herencia de usuarios (1 a 1)
+Ref: CLIENTE.idUsuario - USUARIO.idUsuario
+Ref: EMPLEADO.idUsuario - USUARIO.idUsuario
+Ref: ADMINISTRADOR.idUsuario - USUARIO.idUsuario
+
+// Relaciones de herencia de empleados (1 a 1)
+Ref: RECEPCIONISTA.idempleado - EMPLEADO.idempleado
+Ref: INSTRUCTOR.idempleado - EMPLEADO.idempleado
+Ref: ADM_LIMPIEZA.idempleado - EMPLEADO.idempleado
+
+// Relación operativa de clases (1 a N)
+Ref: CLASES.idinstructor > INSTRUCTOR.idinstructor
+
+// Relaciones de asistencia (Muchos a Muchos desglosada)
+Ref: ASISTE.idcliente > CLIENTE.idcliente
+Ref: ASISTE.idclases > CLASES.idclases
