@@ -3,6 +3,8 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiBody, ApiParam } from '@nestjs
 import { EmpleadoService } from './empleado.service';
 import { CreateEmpleadoDto, UpdateEmpleadoDto } from './dto/empleado.dto';
 import { JwtAuthGuard } from '../auth/guards';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiTags('Empleado')
 @Controller('empleado')
@@ -10,7 +12,8 @@ export class EmpleadoController {
   constructor(private readonly service: EmpleadoService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Obtener todos los empleados' })
   async findAll() {
@@ -18,7 +21,8 @@ export class EmpleadoController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador','instructor')
   @ApiBearerAuth('bearer')
   @ApiParam({ name: 'id', type: 'number' })
   @ApiOperation({ summary: 'Obtener empleado por ID' })
@@ -27,7 +31,8 @@ export class EmpleadoController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiBody({ type: CreateEmpleadoDto })
   @ApiOperation({ summary: 'Crear empleado' })
@@ -36,7 +41,8 @@ export class EmpleadoController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiBody({ type: UpdateEmpleadoDto })
   @ApiOperation({ summary: 'Actualizar empleado' })
@@ -45,7 +51,8 @@ export class EmpleadoController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Eliminar empleado' })
   async remove(@Param('id') id: string) {

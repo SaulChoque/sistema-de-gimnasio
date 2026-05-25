@@ -23,6 +23,7 @@ export class UsuariosService {
         correo: createUsuarioDto.correo,
         telefono: createUsuarioDto.telefono,
         direccion: createUsuarioDto.direccion,
+        rol: createUsuarioDto.rol || 'cliente',
         passwordHash: '', // Will be set by auth service
       },
     });

@@ -15,7 +15,7 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
-    const { correo, passwordHash, nombre, telefono, direccion } = registerDto;
+    const { correo, passwordHash, nombre, telefono, direccion, rol } = registerDto;
 
     // Verificar si el usuario ya existe
     const usuarioExistente = await this.prismaService.usuario.findUnique({
@@ -37,6 +37,7 @@ export class AuthService {
         passwordHash: hashedPassword,
         telefono: telefono,
         direccion: direccion,
+        rol: rol || 'cliente',
       },
     });
 

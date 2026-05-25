@@ -3,6 +3,8 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiBody, ApiParam } from '@nestjs
 import { RecepcionistaService } from './recepcionista.service';
 import { CreateRecepcionistaDto } from './dto/recepcionista.dto';
 import { JwtAuthGuard } from '../auth/guards';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiTags('Recepcionista')
 @Controller('recepcionista')
@@ -10,7 +12,8 @@ export class RecepcionistaController {
   constructor(private readonly service: RecepcionistaService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador','recepcionista')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Obtener todos los recepcionistas' })
   async findAll() {
@@ -18,7 +21,8 @@ export class RecepcionistaController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador','recepcionista')
   @ApiBearerAuth('bearer')
   @ApiParam({ name: 'id', type: 'number' })
   @ApiOperation({ summary: 'Obtener recepcionista por ID' })
@@ -27,7 +31,8 @@ export class RecepcionistaController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiBody({ type: CreateRecepcionistaDto })
   @ApiOperation({ summary: 'Crear recepcionista' })
@@ -36,7 +41,8 @@ export class RecepcionistaController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Eliminar recepcionista' })
   async remove(@Param('id') id: string) {

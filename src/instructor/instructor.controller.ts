@@ -3,6 +3,8 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiBody, ApiParam } from '@nestjs
 import { InstructorService } from './instructor.service';
 import { CreateInstructorDto, UpdateInstructorDto } from './dto/instructor.dto';
 import { JwtAuthGuard } from '../auth/guards';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiTags('Instructor')
 @Controller('instructor')
@@ -10,7 +12,8 @@ export class InstructorController {
   constructor(private readonly service: InstructorService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador','instructor')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Obtener todos los instructores' })
   async findAll() {
@@ -18,7 +21,8 @@ export class InstructorController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador','instructor')
   @ApiBearerAuth('bearer')
   @ApiParam({ name: 'id', type: 'number' })
   @ApiOperation({ summary: 'Obtener instructor por ID' })
@@ -27,7 +31,8 @@ export class InstructorController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiBody({ type: CreateInstructorDto })
   @ApiOperation({ summary: 'Crear instructor' })
@@ -36,7 +41,8 @@ export class InstructorController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiBody({ type: UpdateInstructorDto })
   @ApiOperation({ summary: 'Actualizar instructor' })
@@ -45,7 +51,8 @@ export class InstructorController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Eliminar instructor' })
   async remove(@Param('id') id: string) {

@@ -3,6 +3,8 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiBody, ApiParam } from '@nestjs
 import { AdministradorService } from './administrador.service';
 import { CreateAdministradorDto, UpdateAdministradorDto } from './dto/administrador.dto';
 import { JwtAuthGuard } from '../auth/guards';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiTags('Administrador')
 @Controller('administrador')
@@ -10,7 +12,8 @@ export class AdministradorController {
   constructor(private readonly service: AdministradorService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Obtener todos los administradores' })
   async findAll() {
@@ -18,7 +21,8 @@ export class AdministradorController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiParam({ name: 'id', type: 'number' })
   @ApiOperation({ summary: 'Obtener administrador por ID' })
@@ -27,7 +31,8 @@ export class AdministradorController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiBody({ type: CreateAdministradorDto })
   @ApiOperation({ summary: 'Crear administrador' })
@@ -36,7 +41,8 @@ export class AdministradorController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiBody({ type: UpdateAdministradorDto })
   @ApiOperation({ summary: 'Actualizar administrador' })
@@ -45,7 +51,8 @@ export class AdministradorController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Eliminar administrador' })
   async remove(@Param('id') id: string) {

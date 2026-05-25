@@ -3,7 +3,15 @@ import {
   IsString,
   MinLength,
   MaxLength,
+  IsOptional,
+  IsEnum,
 } from 'class-validator';
+
+export enum RolUsuario {
+  CLIENTE = 'cliente',
+  EMPLEADO = 'empleado',
+  ADMINISTRADOR = 'administrador',
+}
 
 export class RegisterDto {
   @IsString({ message: 'El nombre debe ser texto' })
@@ -25,4 +33,8 @@ export class RegisterDto {
   @IsString({ message: 'La dirección debe ser texto' })
   @MaxLength(200, { message: 'La dirección no puede exceder 200 caracteres' })
   direccion: string;
+
+  @IsOptional()
+  @IsEnum(RolUsuario, { message: 'El rol debe ser cliente, empleado o administrador' })
+  rol?: RolUsuario;
 }

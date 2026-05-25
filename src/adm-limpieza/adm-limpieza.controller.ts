@@ -3,6 +3,8 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiBody, ApiParam } from '@nestjs
 import { AdmLimpiezaService } from './adm-limpieza.service';
 import { CreateAdmLimpiezaDto } from './dto/adm-limpieza.dto';
 import { JwtAuthGuard } from '../auth/guards';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiTags('AdmLimpieza')
 @Controller('adm-limpieza')
@@ -10,7 +12,8 @@ export class AdmLimpiezaController {
   constructor(private readonly service: AdmLimpiezaService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador','adm_limpieza')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Obtener todos los administradores de limpieza' })
   async findAll() {
@@ -18,7 +21,8 @@ export class AdmLimpiezaController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador','adm_limpieza')
   @ApiBearerAuth('bearer')
   @ApiParam({ name: 'id', type: 'number' })
   @ApiOperation({ summary: 'Obtener adm limpieza por ID' })
@@ -27,7 +31,8 @@ export class AdmLimpiezaController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiBody({ type: CreateAdmLimpiezaDto })
   @ApiOperation({ summary: 'Crear adm limpieza' })
@@ -36,7 +41,8 @@ export class AdmLimpiezaController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
   @ApiBearerAuth('bearer')
   @ApiOperation({ summary: 'Eliminar adm limpieza' })
   async remove(@Param('id') id: string) {

@@ -21,6 +21,7 @@ model Usuario {
   correo       String     @unique
   direccion    String
   passwordHash String
+  rol          String     @default("cliente")
   activo       Boolean    @default(true)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt

@@ -18,7 +18,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Juan\",\n  \"correo\": \"juan@example.com\",\n  \"passwordHash\": \"secret123\",\n  \"telefono\": \"77777777\",\n  \"direccion\": \"Calle 1\"\n}"
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"correo\": \"juan@example.com\",\n  \"passwordHash\": \"secret123\",\n  \"telefono\": \"77777777\",\n  \"direccion\": \"Calle 1\",\n  \"rol\": \"cliente\"\n}"
             },
             "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth","register"] }
           }
@@ -76,13 +76,13 @@
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Maria\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"77777777\",\n  \"direccion\": \"Calle 1\"\n}" },
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Maria\",\n  \"correo\": \"maria@example.com\",\n  \"telefono\": \"77777777\",\n  \"direccion\": \"Calle 1\",\n  \"rol\": \"cliente\"\n}" },
             "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] }
           }
         },
         {
           "name": "Update Usuario",
-          "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Maria Updated\"\n}" }, "url": { "raw": "{{baseUrl}}/usuarios/1", "host": ["{{baseUrl}}"], "path": ["usuarios","1"] } }
+          "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Maria Updated\",\n  \"rol\": \"empleado\"\n}" }, "url": { "raw": "{{baseUrl}}/usuarios/1", "host": ["{{baseUrl}}"], "path": ["usuarios","1"] } }
         },
         {
           "name": "Delete Usuario",
