@@ -102,6 +102,45 @@
         { "name": "Get Asistencias", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/clases/1/asistencias", "host": ["{{baseUrl}}"], "path": ["clases","1","asistencias"] } } }
       ]
     }
+    ,
+    {
+      "name": "Administracion",
+      "item": [
+        {
+          "name": "Get All Administradores",
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": { "raw": "{{baseUrl}}/administrador", "host": ["{{baseUrl}}"], "path": ["administrador"] } }
+        },
+        {
+          "name": "Create Administrador",
+          "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"idUsuario\": 2,\n  \"cargo\": \"Gerente\"\n}" }, "url": { "raw": "{{baseUrl}}/administrador", "host": ["{{baseUrl}}"], "path": ["administrador"] } }
+        }
+      ]
+    },
+    {
+      "name": "Empleados",
+      "item": [
+        { "name": "Get All Empleados", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": { "raw": "{{baseUrl}}/empleado", "host": ["{{baseUrl}}"], "path": ["empleado"] } } },
+        { "name": "Create Empleado", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"idUsuario\": 3,\n  \"salario\": 1200.5,\n  \"fechaContrato\": \"2026-05-25T00:00:00.000Z\"\n}" }, "url": { "raw": "{{baseUrl}}/empleado", "host": ["{{baseUrl}}"], "path": ["empleado"] } } }
+      ]
+    },
+    {
+      "name": "Instructor",
+      "item": [
+        { "name": "Create Instructor", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"idEmpleado\": 1,\n  \"especialidad\": \"Yoga\"\n}" }, "url": { "raw": "{{baseUrl}}/instructor", "host": ["{{baseUrl}}"], "path": ["instructor"] } } }
+      ]
+    },
+    {
+      "name": "Recepcionista",
+      "item": [
+        { "name": "Create Recepcionista", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"idEmpleado\": 2\n}" }, "url": { "raw": "{{baseUrl}}/recepcionista", "host": ["{{baseUrl}}"], "path": ["recepcionista"] } } }
+      ]
+    },
+    {
+      "name": "AdmLimpieza",
+      "item": [
+        { "name": "Create AdmLimpieza", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"idEmpleado\": 2\n}" }, "url": { "raw": "{{baseUrl}}/adm-limpieza", "host": ["{{baseUrl}}"], "path": ["adm-limpieza"] } } }
+      ]
+    }
   ],
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:3000" },

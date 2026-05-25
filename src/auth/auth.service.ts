@@ -41,9 +41,15 @@ export class AuthService {
     });
 
     // Generar tokens
+    // Determinar role por relaciones (por defecto 'usuario')
+    const role = 'usuario';
+    const subrole = undefined;
+
     const { accessToken, refreshToken } = this.generateTokens(
       usuario.idUsuario,
       usuario.correo,
+      role,
+      subrole,
     );
 
     // Guardar refresh token en BD
@@ -62,6 +68,8 @@ export class AuthService {
         idUsuario: usuario.idUsuario,
         nombre: usuario.nombre,
         correo: usuario.correo,
+        role,
+        subrole: subrole,
       },
     };
   }
@@ -86,9 +94,34 @@ export class AuthService {
     }
 
     // Generar tokens
+    // Obtener relaciones para determinar role
+    const usuarioConRelaciones = await this.prismaService.usuario.findUnique({
+      where: { correo },
+      include: {
+        administrador: true,
+        empleado: { include: { instructor: true, recepcionista: true, admLimpieza: true } },
+      },
+    });
+
+    let role = 'usuario';
+    let subrole: string | undefined = undefined;
+
+    if (usuarioConRelaciones) {
+      if (usuarioConRelaciones.administrador) {
+        role = 'administrador';
+      } else if (usuarioConRelaciones.empleado) {
+        role = 'empleado';
+        if (usuarioConRelaciones.empleado.instructor) subrole = 'instructor';
+        if (usuarioConRelaciones.empleado.recepcionista) subrole = 'recepcionista';
+        if (usuarioConRelaciones.empleado.admLimpieza) subrole = 'adm_limpieza';
+      }
+    }
+
     const { accessToken, refreshToken } = this.generateTokens(
       usuario.idUsuario,
       usuario.correo,
+      role,
+      subrole,
     );
 
     // Guardar refresh token
@@ -107,6 +140,8 @@ export class AuthService {
         idUsuario: usuario.idUsuario,
         nombre: usuario.nombre,
         correo: usuario.correo,
+        role,
+        subrole,
       },
     };
   }
@@ -127,9 +162,32 @@ export class AuthService {
       throw new UnauthorizedException('Refresh token inválido');
     }
 
+    // Recalcular role en base a relaciones actuales
+    const usuarioConRel = await this.prismaService.usuario.findUnique({
+      where: { idUsuario: sesion.usuario.idUsuario },
+      include: {
+        administrador: true,
+        empleado: { include: { instructor: true, recepcionista: true, admLimpieza: true } },
+      },
+    });
+
+    let role = 'usuario';
+    let subrole: string | undefined = undefined;
+    if (usuarioConRel) {
+      if (usuarioConRel.administrador) role = 'administrador';
+      else if (usuarioConRel.empleado) {
+        role = 'empleado';
+        if (usuarioConRel.empleado.instructor) subrole = 'instructor';
+        if (usuarioConRel.empleado.recepcionista) subrole = 'recepcionista';
+        if (usuarioConRel.empleado.admLimpieza) subrole = 'adm_limpieza';
+      }
+    }
+
     const { accessToken, refreshToken: newRefreshToken } = this.generateTokens(
       sesion.usuario.idUsuario,
       sesion.usuario.correo,
+      role,
+      subrole,
     );
 
     // Actualizar refresh token
@@ -148,6 +206,8 @@ export class AuthService {
         idUsuario: sesion.usuario.idUsuario,
         nombre: sesion.usuario.nombre,
         correo: sesion.usuario.correo,
+        role,
+        subrole,
       },
     };
   }
@@ -155,8 +215,11 @@ export class AuthService {
   private generateTokens(
     idUsuario: number,
     correo: string,
+    role?: string,
+    subrole?: string | undefined,
   ): { accessToken: string; refreshToken: string } {
-    const payload = { idUsuario, correo };
+    const payload: any = { idUsuario, correo, role };
+    if (subrole) payload.subrole = subrole;
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: parseInt(process.env.JWT_EXPIRATION || '3600'),
     });
