@@ -6,8 +6,12 @@ Table USUARIO {
   idUsuario int [pk]
   Nombre varchar
   Telefono varchar 
-  Correo varchar
+  Correo varchar [unique]
   Direccion varchar
+  passwordHash varchar [note: "bcrypt hashed password"]
+  activo boolean [default: true]
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
 }
 
 // ------ HERENCIA DE USUARIOS ------
@@ -64,6 +68,18 @@ Table ASISTE {
 }
 
 // ==========================================
+// TABLA DE SESIONES (JWT)
+// ==========================================
+
+Table SESION {
+  idSesion int [pk]
+  idUsuario int
+  refreshToken varchar
+  expiresAt timestamp
+  createdAt timestamp [default: `now()`]
+}
+
+// ==========================================
 // RELACIONES (FOREIGN KEYS)
 // ==========================================
 
@@ -83,3 +99,6 @@ Ref: CLASES.idinstructor > INSTRUCTOR.idinstructor
 // Relaciones de asistencia (Muchos a Muchos desglosada)
 Ref: ASISTE.idcliente > CLIENTE.idcliente
 Ref: ASISTE.idclases > CLASES.idclases
+
+// Relación de sesiones (1 a N)
+Ref: SESION.idUsuario > USUARIO.idUsuario

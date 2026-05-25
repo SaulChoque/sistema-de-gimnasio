@@ -1,0 +1,159 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// USUARIOS Y AUTENTICACIÓN
+// ==========================================
+
+model Usuario {
+  idUsuario    Int        @id @default(autoincrement())
+  nombre       String
+  telefono     String
+  correo       String     @unique
+  direccion    String
+  passwordHash String
+  activo       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // Relaciones de herencia
+  cliente      Cliente?
+  empleado     Empleado?
+  administrador Administrador?
+  
+  // Sesiones
+  sesiones     Sesion[]
+
+  @@map("usuario")
+}
+
+model Sesion {
+  idSesion     Int       @id @default(autoincrement())
+  idUsuario    Int
+  usuario      Usuario   @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade)
+  refreshToken String
+  expiresAt    DateTime
+  createdAt    DateTime  @default(now())
+
+  @@index([idUsuario])
+  @@map("sesion")
+}
+
+// ==========================================
+// HERENCIA DE USUARIOS
+// ==========================================
+
+model Cliente {
+  idCliente Int    @id @default(autoincrement())
+  idUsuario Int    @unique
+  usuario   Usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade)
+  
+  // Relaciones
+  asistencias Asiste[]
+
+  @@index([idUsuario])
+  @@map("cliente")
+}
+
+model Empleado {
+  idEmpleado      Int        @id @default(autoincrement())
+  idUsuario       Int        @unique
+  usuario         Usuario    @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade)
+  salario         Float
+  fechaContrato   DateTime   @map("fecha_contrato")
+
+  // Relaciones de herencia
+  recepcionista   Recepcionista?
+  instructor      Instructor?
+  admLimpieza     AdmLimpieza?
+
+  @@index([idUsuario])
+  @@map("empleado")
+}
+
+model Administrador {
+  idAdministrador Int     @id @default(autoincrement())
+  idUsuario       Int     @unique
+  usuario         Usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade)
+  cargo           String
+
+  @@index([idUsuario])
+  @@map("administrador")
+}
+
+// ==========================================
+// HERENCIA DE EMPLEADOS
+// ==========================================
+
+model Recepcionista {
+  idRecepcionista Int      @id @default(autoincrement())
+  idEmpleado      Int      @unique
+  empleado        Empleado @relation(fields: [idEmpleado], references: [idEmpleado], onDelete: Cascade)
+
+  @@index([idEmpleado])
+  @@map("recepcionista")
+}
+
+model Instructor {
+  idInstructor Int      @id @default(autoincrement())
+  idEmpleado   Int      @unique
+  empleado     Empleado @relation(fields: [idEmpleado], references: [idEmpleado], onDelete: Cascade)
+  especialidad String
+
+  // Relaciones
+  clases       Clases[]
+
+  @@index([idEmpleado])
+  @@map("instructor")
+}
+
+model AdmLimpieza {
+  idLimpieza Int      @id @default(autoincrement())
+  idEmpleado Int      @unique
+  empleado   Empleado @relation(fields: [idEmpleado], references: [idEmpleado], onDelete: Cascade)
+
+  @@index([idEmpleado])
+  @@map("adm_limpieza")
+}
+
+// ==========================================
+// CLASES Y ASISTENCIA
+// ==========================================
+
+model Clases {
+  idClases   Int       @id @default(autoincrement())
+  idInstructor Int
+  instructor Instructor @relation(fields: [idInstructor], references: [idInstructor], onDelete: Cascade)
+  nombre     String
+  horario    String
+
+  // Relaciones
+  asistencias Asiste[]
+
+  @@index([idInstructor])
+  @@map("clases")
+}
+
+model Asiste {
+  idCliente Int
+  cliente   Cliente @relation(fields: [idCliente], references: [idCliente], onDelete: Cascade)
+  
+  idClases  Int
+  clases    Clases  @relation(fields: [idClases], references: [idClases], onDelete: Cascade)
+  
+  fecha     DateTime
+
+  @@id([idCliente, idClases])
+  @@index([idCliente])
+  @@index([idClases])
+  @@map("asiste")
+}
