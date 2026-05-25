@@ -1,0 +1,110 @@
+{
+  "info": {
+    "name": "Sistema de Gimnasio API",
+    "_postman_id": "sistema-gimnasio-collection",
+    "description": "Colección de endpoints para Sistema de Gimnasio",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"correo\": \"juan@example.com\",\n  \"passwordHash\": \"secret123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth","register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"correo\": \"juan@example.com\",\n  \"passwordHash\": \"secret123\"\n}" },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          }
+        },
+        {
+          "name": "Refresh",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/auth/refresh", "host": ["{{baseUrl}}"], "path": ["auth","refresh"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth","logout"] }
+          }
+        },
+        {
+          "name": "Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/profile", "host": ["{{baseUrl}}"], "path": ["auth","profile"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Get All Usuarios",
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] } }
+        },
+        {
+          "name": "Get Usuario by ID",
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": { "raw": "{{baseUrl}}/usuarios/1", "host": ["{{baseUrl}}"], "path": ["usuarios","1"] } }
+        },
+        {
+          "name": "Create Usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Maria\",\n  \"correo\": \"maria@example.com\"\n}" },
+            "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] }
+          }
+        },
+        {
+          "name": "Update Usuario",
+          "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Maria Updated\"\n}" }, "url": { "raw": "{{baseUrl}}/usuarios/1", "host": ["{{baseUrl}}"], "path": ["usuarios","1"] } }
+        },
+        {
+          "name": "Delete Usuario",
+          "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": { "raw": "{{baseUrl}}/usuarios/1", "host": ["{{baseUrl}}"], "path": ["usuarios","1"] } }
+        }
+      ]
+    },
+    {
+      "name": "Clases",
+      "item": [
+        { "name": "Get All Clases", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/clases", "host": ["{{baseUrl}}"], "path": ["clases"] } } },
+        { "name": "Get Clase by ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/clases/1", "host": ["{{baseUrl}}"], "path": ["clases","1"] } } },
+        { "name": "Create Clase", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"idInstructor\": 1,\n  \"nombre\": \"Yoga\",\n  \"horario\": \"08:00\"\n}" }, "url": { "raw": "{{baseUrl}}/clases", "host": ["{{baseUrl}}"], "path": ["clases"] } } },
+        { "name": "Update Clase", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Yoga Advanced\"\n}" }, "url": { "raw": "{{baseUrl}}/clases/1", "host": ["{{baseUrl}}"], "path": ["clases","1"] } } },
+        { "name": "Delete Clase", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": { "raw": "{{baseUrl}}/clases/1", "host": ["{{baseUrl}}"], "path": ["clases","1"] } } },
+        { "name": "Add Asistencia", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"idCliente\": 1\n}" }, "url": { "raw": "{{baseUrl}}/clases/1/asistencia", "host": ["{{baseUrl}}"], "path": ["clases","1","asistencia"] } } },
+        { "name": "Get Asistencias", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/clases/1/asistencias", "host": ["{{baseUrl}}"], "path": ["clases","1","asistencias"] } } }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "accessToken", "value": "" }
+  ]
+}
